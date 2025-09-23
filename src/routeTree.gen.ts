@@ -9,11 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WithdrawRouteImport } from './routes/withdraw'
+import { Route as TransferRouteImport } from './routes/transfer'
+import { Route as SettingRouteImport } from './routes/setting'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as GameHistoryRouteImport } from './routes/game-history'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as DepositRouteImport } from './routes/deposit'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WithdrawRoute = WithdrawRouteImport.update({
+  id: '/withdraw',
+  path: '/withdraw',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransferRoute = TransferRouteImport.update({
+  id: '/transfer',
+  path: '/transfer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingRoute = SettingRouteImport.update({
+  id: '/setting',
+  path: '/setting',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -24,9 +44,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GameHistoryRoute = GameHistoryRouteImport.update({
+  id: '/game-history',
+  path: '/game-history',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepositRoute = DepositRouteImport.update({
+  id: '/deposit',
+  path: '/deposit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,40 +67,109 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/deposit': typeof DepositRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/game-history': typeof GameHistoryRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/setting': typeof SettingRoute
+  '/transfer': typeof TransferRoute
+  '/withdraw': typeof WithdrawRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/deposit': typeof DepositRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/game-history': typeof GameHistoryRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/setting': typeof SettingRoute
+  '/transfer': typeof TransferRoute
+  '/withdraw': typeof WithdrawRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/deposit': typeof DepositRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/game-history': typeof GameHistoryRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/setting': typeof SettingRoute
+  '/transfer': typeof TransferRoute
+  '/withdraw': typeof WithdrawRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/forgot-password' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/deposit'
+    | '/forgot-password'
+    | '/game-history'
+    | '/login'
+    | '/register'
+    | '/setting'
+    | '/transfer'
+    | '/withdraw'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forgot-password' | '/login' | '/register'
-  id: '__root__' | '/' | '/forgot-password' | '/login' | '/register'
+  to:
+    | '/'
+    | '/deposit'
+    | '/forgot-password'
+    | '/game-history'
+    | '/login'
+    | '/register'
+    | '/setting'
+    | '/transfer'
+    | '/withdraw'
+  id:
+    | '__root__'
+    | '/'
+    | '/deposit'
+    | '/forgot-password'
+    | '/game-history'
+    | '/login'
+    | '/register'
+    | '/setting'
+    | '/transfer'
+    | '/withdraw'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DepositRoute: typeof DepositRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  GameHistoryRoute: typeof GameHistoryRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  SettingRoute: typeof SettingRoute
+  TransferRoute: typeof TransferRoute
+  WithdrawRoute: typeof WithdrawRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/withdraw': {
+      id: '/withdraw'
+      path: '/withdraw'
+      fullPath: '/withdraw'
+      preLoaderRoute: typeof WithdrawRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transfer': {
+      id: '/transfer'
+      path: '/transfer'
+      fullPath: '/transfer'
+      preLoaderRoute: typeof TransferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setting': {
+      id: '/setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof SettingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -85,11 +184,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/game-history': {
+      id: '/game-history'
+      path: '/game-history'
+      fullPath: '/game-history'
+      preLoaderRoute: typeof GameHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/forgot-password': {
       id: '/forgot-password'
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deposit': {
+      id: '/deposit'
+      path: '/deposit'
+      fullPath: '/deposit'
+      preLoaderRoute: typeof DepositRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -104,9 +217,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DepositRoute: DepositRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  GameHistoryRoute: GameHistoryRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  SettingRoute: SettingRoute,
+  TransferRoute: TransferRoute,
+  WithdrawRoute: WithdrawRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
