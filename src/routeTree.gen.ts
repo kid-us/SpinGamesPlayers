@@ -13,6 +13,7 @@ import { Route as WithdrawRouteImport } from './routes/withdraw'
 import { Route as TransferRouteImport } from './routes/transfer'
 import { Route as SettingRouteImport } from './routes/setting'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as OtpRouteImport } from './routes/otp'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as GameHistoryRouteImport } from './routes/game-history'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
@@ -37,6 +38,11 @@ const SettingRoute = SettingRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OtpRoute = OtpRouteImport.update({
+  id: '/otp',
+  path: '/otp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/game-history': typeof GameHistoryRoute
   '/login': typeof LoginRoute
+  '/otp': typeof OtpRoute
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/transfer': typeof TransferRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/game-history': typeof GameHistoryRoute
   '/login': typeof LoginRoute
+  '/otp': typeof OtpRoute
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/transfer': typeof TransferRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/game-history': typeof GameHistoryRoute
   '/login': typeof LoginRoute
+  '/otp': typeof OtpRoute
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/transfer': typeof TransferRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/game-history'
     | '/login'
+    | '/otp'
     | '/register'
     | '/setting'
     | '/transfer'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/game-history'
     | '/login'
+    | '/otp'
     | '/register'
     | '/setting'
     | '/transfer'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/game-history'
     | '/login'
+    | '/otp'
     | '/register'
     | '/setting'
     | '/transfer'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   GameHistoryRoute: typeof GameHistoryRoute
   LoginRoute: typeof LoginRoute
+  OtpRoute: typeof OtpRoute
   RegisterRoute: typeof RegisterRoute
   SettingRoute: typeof SettingRoute
   TransferRoute: typeof TransferRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/otp': {
+      id: '/otp'
+      path: '/otp'
+      fullPath: '/otp'
+      preLoaderRoute: typeof OtpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   GameHistoryRoute: GameHistoryRoute,
   LoginRoute: LoginRoute,
+  OtpRoute: OtpRoute,
   RegisterRoute: RegisterRoute,
   SettingRoute: SettingRoute,
   TransferRoute: TransferRoute,
