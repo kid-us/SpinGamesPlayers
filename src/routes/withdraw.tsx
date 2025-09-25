@@ -38,13 +38,13 @@ function WithdrawPage() {
 
       <p className="text-xl mb-5 font-semibold">Withdraw Money</p>
 
-      <div className="flex space-x-5 mb-8">
+      <div className="grid grid-cols-2 gap-x-5 mb-8">
         {(["chapa", "manual"] as const).map((method) => (
           <Button
             key={method}
             variant="outline"
             onClick={() => handleSelect(method)}
-            className={`${method === depositMethod && "bg-primary text-white"} w-40 capitalize`}
+            className={`${method === depositMethod && "bg-primary text-white"} w-full capitalize`}
           >
             {method}
           </Button>
