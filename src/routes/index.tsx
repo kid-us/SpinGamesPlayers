@@ -21,14 +21,14 @@ const routes: { id: number; path: RoutePath }[] = [
 
 function HomePage() {
   return (
-    <div className="max-w-4xl mx-auto flex flex-col md:mt-20 mt-10 md:px-2">
+    <div className="max-w-lg mx-auto flex flex-col mt-10 md:px-2">
       <p className="text-lg">
         Welcome back{" "}
         <span className="text-primary font-bold text-xl">Lorem</span> Your
         current balance is <span className="font-bold text-2xl">42</span> ETB
       </p>
 
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5 mt-10">
+      <div className="grid md:grid-cols-2 gap-5 mt-10">
         {routes.map((route) => (
           <Link
             key={route.id}

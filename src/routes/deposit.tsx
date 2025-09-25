@@ -33,7 +33,7 @@ function DepositPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col md:mt-20 mt-10">
+    <div className="max-w-lg mx-auto flex flex-col mt-10">
       <BreadCrumb route="Deposit" />
 
       <p className="text-xl mb-5 font-semibold">Deposit Money</p>
@@ -44,7 +44,7 @@ function DepositPage() {
             key={method}
             variant="outline"
             onClick={() => handleSelect(method)}
-            className={`${method === depositMethod && "bg-primary text-white"} w-40 capitalize`}
+            className={`${method === depositMethod && "bg-primary text-white"} w-full capitalize`}
           >
             {method}
           </Button>
