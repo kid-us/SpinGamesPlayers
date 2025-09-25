@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { Eye, EyeOff, House, Loader } from "lucide-react";
 
 const loginSchema = z.object({
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
@@ -50,7 +50,16 @@ function Login() {
 
   return (
     <div className={`flex items-center justify-center min-h-screen`}>
-      <div className={`md:max-w-sm w-[95%] p-8 rounded-lg border`}>
+      {/* Return back to Home */}
+      <Link
+        to="/"
+        className="absolute top-5 left-5 flex items-center space-x-1"
+      >
+        <House size={20} />
+        <p>Home</p>
+      </Link>
+
+      <div className={`md:max-w-sm md:w-[95%] md:p-8 p-5 rounded-lg border`}>
         <h2 className="text-2xl text-center font-semibold">
           Sign in to Spin Games
         </h2>

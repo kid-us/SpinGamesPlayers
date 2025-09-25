@@ -1,9 +1,17 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { LoaderPinwheel, LogOut, User } from "lucide-react";
 
 const Navbar = () => {
+  const location = useLocation();
+
   return (
-    <div className="max-w-lg mx-auto flex items-center justify-between py-3 border-b border-zinc-200">
+    <div
+      className={`max-w-lg mx-auto flex items-center justify-between py-3 border-b border-zinc-200 ${
+        location.pathname === "/login" || location.pathname === "/register"
+          ? "hidden"
+          : ""
+      }`}
+    >
       <Link to="/" className="flex items-center justify-start space-x-5">
         <LoaderPinwheel size={40} />
         <p className="text-2xl font-bold">Spin Games</p>
