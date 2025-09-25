@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WithdrawRouteImport } from './routes/withdraw'
 import { Route as TransferRouteImport } from './routes/transfer'
 import { Route as SettingRouteImport } from './routes/setting'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as OtpRouteImport } from './routes/otp'
 import { Route as LoginRouteImport } from './routes/login'
@@ -33,6 +34,11 @@ const TransferRoute = TransferRouteImport.update({
 const SettingRoute = SettingRouteImport.update({
   id: '/setting',
   path: '/setting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/otp': typeof OtpRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/setting': typeof SettingRoute
   '/transfer': typeof TransferRoute
   '/withdraw': typeof WithdrawRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/otp': typeof OtpRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/setting': typeof SettingRoute
   '/transfer': typeof TransferRoute
   '/withdraw': typeof WithdrawRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/otp': typeof OtpRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/setting': typeof SettingRoute
   '/transfer': typeof TransferRoute
   '/withdraw': typeof WithdrawRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/otp'
     | '/register'
+    | '/reset-password'
     | '/setting'
     | '/transfer'
     | '/withdraw'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/otp'
     | '/register'
+    | '/reset-password'
     | '/setting'
     | '/transfer'
     | '/withdraw'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/otp'
     | '/register'
+    | '/reset-password'
     | '/setting'
     | '/transfer'
     | '/withdraw'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   OtpRoute: typeof OtpRoute
   RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SettingRoute: typeof SettingRoute
   TransferRoute: typeof TransferRoute
   WithdrawRoute: typeof WithdrawRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/setting'
       fullPath: '/setting'
       preLoaderRoute: typeof SettingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   OtpRoute: OtpRoute,
   RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SettingRoute: SettingRoute,
   TransferRoute: TransferRoute,
   WithdrawRoute: WithdrawRoute,
