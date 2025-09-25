@@ -11,6 +11,7 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { formatDate } from "./game-history";
 import { mockTxnHistory } from "@/data/data";
+import BreadCrumb from "@/components/BreadCrumb";
 
 // Route
 export const Route = createFileRoute("/transaction-history")({
@@ -19,7 +20,9 @@ export const Route = createFileRoute("/transaction-history")({
 
 function TransactionHistoryPage() {
   return (
-    <div className="max-w-lg mx-auto flex flex-col justify-center h-screen">
+    <div className="max-w-lg mx-auto flex flex-col md:mt-20 mt-10">
+      <BreadCrumb route="Transaction History" />
+
       <p className="text-xl mb-5 font-semibold">Transaction History</p>
       <Table className="!rounded border">
         <TableCaption>A list of Transaction History.</TableCaption>

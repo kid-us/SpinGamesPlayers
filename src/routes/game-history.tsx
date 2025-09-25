@@ -1,3 +1,4 @@
+import BreadCrumb from "@/components/BreadCrumb";
 import {
   Table,
   TableBody,
@@ -29,7 +30,9 @@ export const formatDate = (dateString: string): string => {
 
 function GameHistoryPage() {
   return (
-    <div className="max-w-lg mx-auto flex flex-col justify-center h-screen">
+    <div className="max-w-lg mx-auto flex flex-col md:mt-20 mt-10">
+      <BreadCrumb route="Game History" />
+
       <p className="text-xl mb-5 font-semibold">Game History</p>
       <Table className="!rounded border">
         <TableCaption>A list of Game History.</TableCaption>

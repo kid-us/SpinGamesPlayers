@@ -1,3 +1,4 @@
+import BreadCrumb from "@/components/BreadCrumb";
 import Chapa from "@/components/deposit/Chapa";
 import Manual from "@/components/deposit/Manual";
 import { Button } from "@/components/ui/button";
@@ -32,10 +33,12 @@ function DepositPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col justify-center h-screen">
+    <div className="max-w-lg mx-auto flex flex-col md:mt-20 mt-10">
+      <BreadCrumb route="Deposit" />
+
       <p className="text-xl mb-5 font-semibold">Deposit Money</p>
 
-      <div className="flex space-x-5 mb-8">
+      <div className="grid grid-cols-2 gap-x-5 mb-8">
         {(["chapa", "manual"] as const).map((method) => (
           <Button
             key={method}

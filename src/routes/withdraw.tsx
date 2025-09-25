@@ -7,6 +7,7 @@ import {
 import z from "zod";
 import Chapa from "@/components/withdraw/Chapa";
 import Manual from "@/components/withdraw/Manual";
+import BreadCrumb from "@/components/BreadCrumb";
 
 // valid methods
 const methodSchema = z.enum(["chapa", "manual"]);
@@ -32,7 +33,9 @@ function WithdrawPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col justify-center h-screen">
+    <div className="max-w-lg mx-auto flex flex-col md:mt-20 mt-10">
+      <BreadCrumb route="Withdraw" />
+
       <p className="text-xl mb-5 font-semibold">Withdraw Money</p>
 
       <div className="flex space-x-5 mb-8">
