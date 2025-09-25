@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const depositSchema = z.object({
-  amount: z.string().min(10, "Amount must be >=50"),
+  amount: z.string().min(2, "Amount must be >=50"),
 });
 
 type DepositValues = z.infer<typeof depositSchema>;

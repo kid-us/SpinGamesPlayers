@@ -15,7 +15,8 @@ import { Input } from "@/components/ui/input";
 import { cbe, telebirr } from "@/assets";
 
 const depositSchema = z.object({
-  tx: z.string().min(6, "Transaction ID required."),
+  accountNo: z.string().min(6, "Account Number required"),
+  amount: z.string().min(2, "Minimum amount must be 50"),
   depositMethod: z.string().min(1, "Please choose deposit method."),
 });
 
@@ -36,7 +37,8 @@ const Manual = () => {
   const form = useForm<DepositValues>({
     resolver: zodResolver(depositSchema),
     defaultValues: {
-      tx: "",
+      accountNo: "",
+      amount: "50",
       depositMethod: "",
     },
   });
@@ -51,7 +53,47 @@ const Manual = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        {/* AccountNo */}
+        <FormField
+          control={form.control}
+          name="accountNo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs">Account Number</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  {...field}
+                  placeholder="1000.... / 09... /07..."
+                  className="border border-border h-10"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Amount */}
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs">Amount</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  {...field}
+                  min={50}
+                  className="border border-border h-10"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {/* Transaction methods */}
         <FormField
           control={form.control}
@@ -80,26 +122,6 @@ const Manual = () => {
                     </Button>
                   ))}
                 </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Transaction Id */}
-        <FormField
-          control={form.control}
-          name="tx"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-xs">Transaction ID</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  {...field}
-                  placeholder="Enter Transaction ID"
-                  className="border border-border h-10"
-                />
               </FormControl>
               <FormMessage />
             </FormItem>
