@@ -207,7 +207,7 @@ function SettingPage() {
             type="submit"
             className={`w-full h-11 mt-3`}
           >
-            {isSubmitting ? <Loader className="animate-spin" /> : "Register"}
+            {isSubmitting ? <Loader className="animate-spin" /> : "Update"}
           </Button>
         </form>
       </Form>
