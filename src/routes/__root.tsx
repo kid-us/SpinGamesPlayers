@@ -8,9 +8,9 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <>
+    <div className="lg:px-0 px-8">
       <Outlet />
       <Toaster />
-    </>
+    </div>
   );
 }

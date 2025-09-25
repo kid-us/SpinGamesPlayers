@@ -22,14 +22,14 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const cchapaWithdrawSchema = z.object({
+const chapaWithdrawSchema = z.object({
   name: z.string().min(3, "Account Holder name required"),
   accountNo: z.string().min(6, "Account Number required"),
   amount: z.string().min(2, "Minimum amount must be 50"),
   bank: z.string().min(3, "Bank Required"),
 });
 
-type CchapaWithdrawValues = z.infer<typeof cchapaWithdrawSchema>;
+type ChapaWithdrawValues = z.infer<typeof chapaWithdrawSchema>;
 
 const Chapa = () => {
   const [banks, setBanks] = useState<{ id: string; name: string }[]>([]);
@@ -52,8 +52,8 @@ const Chapa = () => {
       });
   }, []);
 
-  const form = useForm<CchapaWithdrawValues>({
-    resolver: zodResolver(cchapaWithdrawSchema),
+  const form = useForm<ChapaWithdrawValues>({
+    resolver: zodResolver(chapaWithdrawSchema),
     defaultValues: {
       accountNo: "",
       bank: "",
@@ -64,7 +64,7 @@ const Chapa = () => {
 
   const { isSubmitting } = form.formState;
 
-  const onSubmit = (values: CchapaWithdrawValues) => {
+  const onSubmit = (values: ChapaWithdrawValues) => {
     console.log("Withdraw attempted with:", values);
   };
 
