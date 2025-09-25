@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WithdrawRouteImport } from './routes/withdraw'
 import { Route as TransferRouteImport } from './routes/transfer'
+import { Route as TransactionHistoryRouteImport } from './routes/transaction-history'
 import { Route as SettingRouteImport } from './routes/setting'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -29,6 +30,11 @@ const WithdrawRoute = WithdrawRouteImport.update({
 const TransferRoute = TransferRouteImport.update({
   id: '/transfer',
   path: '/transfer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransactionHistoryRoute = TransactionHistoryRouteImport.update({
+  id: '/transaction-history',
+  path: '/transaction-history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingRoute = SettingRouteImport.update({
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setting': typeof SettingRoute
+  '/transaction-history': typeof TransactionHistoryRoute
   '/transfer': typeof TransferRoute
   '/withdraw': typeof WithdrawRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setting': typeof SettingRoute
+  '/transaction-history': typeof TransactionHistoryRoute
   '/transfer': typeof TransferRoute
   '/withdraw': typeof WithdrawRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setting': typeof SettingRoute
+  '/transaction-history': typeof TransactionHistoryRoute
   '/transfer': typeof TransferRoute
   '/withdraw': typeof WithdrawRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setting'
+    | '/transaction-history'
     | '/transfer'
     | '/withdraw'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setting'
+    | '/transaction-history'
     | '/transfer'
     | '/withdraw'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setting'
+    | '/transaction-history'
     | '/transfer'
     | '/withdraw'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SettingRoute: typeof SettingRoute
+  TransactionHistoryRoute: typeof TransactionHistoryRoute
   TransferRoute: typeof TransferRoute
   WithdrawRoute: typeof WithdrawRoute
 }
@@ -187,6 +200,13 @@ declare module '@tanstack/react-router' {
       path: '/transfer'
       fullPath: '/transfer'
       preLoaderRoute: typeof TransferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transaction-history': {
+      id: '/transaction-history'
+      path: '/transaction-history'
+      fullPath: '/transaction-history'
+      preLoaderRoute: typeof TransactionHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/setting': {
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SettingRoute: SettingRoute,
+  TransactionHistoryRoute: TransactionHistoryRoute,
   TransferRoute: TransferRoute,
   WithdrawRoute: WithdrawRoute,
 }
