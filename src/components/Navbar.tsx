@@ -35,8 +35,8 @@ const Navbar = () => {
         location.pathname === "/login" ||
         location.pathname === "/register" ||
         location.pathname === "/otp" ||
-        location.pathname === "reset-password" ||
-        location.pathname === "/forget-password"
+        location.pathname === "/reset-password" ||
+        location.pathname === "/forgot-password"
           ? "hidden"
           : ""
       }`}

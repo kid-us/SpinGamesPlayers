@@ -56,6 +56,13 @@ function OTPPage() {
 
   const uid = searchParams.uid;
 
+  // IF uid is not there redirect to login
+  useEffect(() => {
+    if (!uid) {
+      navigate({ to: "/login" });
+    }
+  }, [uid]);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {

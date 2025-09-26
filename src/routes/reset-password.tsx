@@ -23,7 +23,7 @@ import {
   useNavigate,
   useSearch,
 } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 import { apiKey } from "@/services/api";
@@ -60,6 +60,13 @@ function ResetPasswordPage() {
   const navigate = useNavigate();
 
   const uid = searchParams.uid;
+
+  // IF uid is not there redirect to login
+  useEffect(() => {
+    if (!uid) {
+      navigate({ to: "/login" });
+    }
+  }, [uid]);
 
   const [showPassword, setShowPassword] = useState(false);
 
