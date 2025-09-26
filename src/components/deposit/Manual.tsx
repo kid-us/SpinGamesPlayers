@@ -61,6 +61,9 @@ const Manual = () => {
           },
         })
         .then((response) => {
+          // Reset Form
+          form.reset();
+
           // Success toast
           toast.success(response.data.message, {
             className: "!bg-green-500 !text-white",

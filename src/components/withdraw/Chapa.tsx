@@ -21,18 +21,25 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { apiKey, token } from "@/services/api";
+import { toast, Toaster } from "sonner";
 
 const chapaWithdrawSchema = z.object({
   name: z.string().min(3, "Account Holder name required"),
   accountNo: z.string().min(6, "Account Number required"),
   amount: z.string().min(2, "Minimum amount must be 50"),
-  bank: z.string().min(3, "Bank Required"),
+  bank: z.string().min(8, "Bank Required"),
 });
+
+interface Banks {
+  id: number;
+  name: string;
+}
 
 type ChapaWithdrawValues = z.infer<typeof chapaWithdrawSchema>;
 
 const Chapa = () => {
-  const [banks, setBanks] = useState<{ id: string; name: string }[]>([]);
+  const [banks, setBanks] = useState<Banks[]>([]);
 
   // Fetch banks
   useEffect(() => {
@@ -44,7 +51,6 @@ const Chapa = () => {
         },
       })
       .then((response) => {
-        // Assuming response.data is an array of banks with id and name
         setBanks(response.data);
       })
       .catch((error) => {
@@ -64,12 +70,42 @@ const Chapa = () => {
 
   const { isSubmitting } = form.formState;
 
-  const onSubmit = (values: ChapaWithdrawValues) => {
-    console.log("Withdraw attempted with:", values);
+  // On Submit
+  const onSubmit = async (values: ChapaWithdrawValues) => {
+    const data = {
+      amount: Number(values.amount),
+      bank_code: Number(values.bank),
+      account_number: values.accountNo,
+      account_name: values.name,
+    };
+
+    try {
+      await axios
+        .post(`${apiKey}chapa-withdraw`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // Reset Form
+          form.reset();
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+        });
+    } catch (error: any) {
+      toast.error(error.response?.data?.error, {
+        className: "!bg-red-500 !text-white",
+        duration: 6000,
+      });
+    }
   };
 
   return (
     <Form {...form}>
+      <Toaster />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {/* Name */}
         <FormField
@@ -141,15 +177,18 @@ const Chapa = () => {
               <FormControl>
                 <Select
                   value={field.value}
-                  onValueChange={field.onChange}
-                  disabled={banks.length === 0} // disable until banks load
+                  onValueChange={(value) => {
+                    console.log("Selected bank ID:", value); // Debug selected value
+                    field.onChange(value);
+                  }}
+                  disabled={banks.length === 0}
                 >
                   <SelectTrigger className="w-full !h-10 rounded">
                     <SelectValue placeholder="Select Bank" />
                   </SelectTrigger>
                   <SelectContent>
                     {banks.map((bank) => (
-                      <SelectItem key={bank.id} value={bank.name}>
+                      <SelectItem key={bank.id} value={bank.id.toString()}>
                         {bank.name}
                       </SelectItem>
                     ))}
