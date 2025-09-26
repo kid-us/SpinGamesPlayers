@@ -12,6 +12,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { apiKey, token } from "@/services/api";
+import { toast, Toaster } from "sonner";
 
 const depositSchema = z.object({
   amount: z.string().min(2, "Amount must be >=50"),
@@ -30,13 +33,39 @@ const Chapa = () => {
   const { isSubmitting } = form.formState;
 
   // On Submit
-  const onSubmit = (values: DepositValues) => {
-    console.log("Sign-in attempted with:", values);
-    // navigate({ to: "/" });
+  const onSubmit = async (values: DepositValues) => {
+    try {
+      await axios
+        .post(
+          `${apiKey}chapa-deposit?amount=${values.amount}`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          // Success toast
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+          window.location.href = response.data.checkout_url;
+        });
+    } catch (error: any) {
+      // Error toast
+      toast.error(error.response?.data?.error, {
+        className: "!bg-red-500 !text-white",
+        duration: 6000,
+      });
+    }
   };
 
   return (
     <Form {...form}>
+      <Toaster />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         {/* Amount */}
         <FormField
