@@ -1,4 +1,4 @@
-import type { GameHistory, TxnHistory } from "@/types/types";
+import type { GameHistory } from "@/types/types";
 
 // Game History
 export const mockGameHistory: GameHistory[] = [
@@ -73,81 +73,5 @@ export const mockGameHistory: GameHistory[] = [
     winnerUsername: "shadowHunter",
     date: "2025-09-12",
     winnerAmount: 330,
-  },
-];
-
-// Txn History
-export const mockTxnHistory: TxnHistory[] = [
-  {
-    date: "2025-09-01",
-    amount: 500,
-    reason: "Deposit Bonus",
-    sign: "+",
-  },
-  {
-    date: "2025-09-02",
-    amount: 120,
-    reason: "Game Entry Fee",
-    sign: "-",
-  },
-  {
-    date: "2025-09-03",
-    amount: "2,000",
-    reason: "Jackpot Win",
-    sign: "+",
-  },
-  {
-    date: "2025-09-04",
-    amount: 300,
-    reason: "Referral Bonus",
-    sign: "+",
-  },
-  {
-    date: "2025-09-05",
-    amount: 150,
-    reason: "Spin Game Loss",
-    sign: "-",
-  },
-  {
-    date: "2025-09-06",
-    amount: "750",
-    reason: "Tournament Reward",
-    sign: "+",
-  },
-  {
-    date: "2025-09-07",
-    amount: 200,
-    reason: "Purchase Coins",
-    sign: "-",
-  },
-  {
-    date: "2025-09-08",
-    amount: 1000,
-    reason: "Lucky Draw",
-    sign: "+",
-  },
-  {
-    date: "2025-09-09",
-    amount: 90,
-    reason: "Service Fee",
-    sign: "-",
-  },
-  {
-    date: "2025-09-10",
-    amount: "1,200",
-    reason: "Weekly Bonus",
-    sign: "+",
-  },
-  {
-    date: "2025-09-11",
-    amount: 400,
-    reason: "Withdraw",
-    sign: "-",
-  },
-  {
-    date: "2025-09-12",
-    amount: 2200,
-    reason: "Big Win",
-    sign: "+",
   },
 ];
