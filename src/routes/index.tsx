@@ -1,7 +1,16 @@
-import { useAuth } from "@/hook/useAuth";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useAuthStore } from "@/stores/authStore";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: async () => {
+    const { isAuthenticated, loading, fetchMe } = useAuthStore.getState();
+    if (loading) {
+      await fetchMe();
+    }
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", replace: true });
+    }
+  },
   component: HomePage,
 });
 
@@ -23,16 +32,20 @@ const routes: { id: number; path: RoutePath }[] = [
 ];
 
 function HomePage() {
-  const { user } = useAuth();
-
-  console.log(user);
+  const { user } = useAuthStore();
 
   return (
     <div className="max-w-lg mx-auto flex flex-col mt-10 md:px-2">
       <p className="text-lg">
         Welcome back{" "}
-        <span className="text-primary font-bold text-xl">Lorem</span> Your
-        current balance is <span className="font-bold text-2xl">42</span> ETB
+        <span className="text-sky-500 font-bold text-xl">
+          {user?.display_name}
+        </span>{" "}
+        Your current balance is{" "}
+        <span className="text-sky-500 font-bold text-2xl">
+          {user?.wallet.toLocaleString()}
+        </span>{" "}
+        ETB
       </p>
 
       <div className="grid md:grid-cols-2 gap-5 mt-10">

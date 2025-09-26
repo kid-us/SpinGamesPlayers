@@ -13,14 +13,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 // import axios from "axios";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import axios from "axios";
 import { apiKey, token } from "@/services/api";
 import { toast, Toaster } from "sonner";
 import BreadCrumb from "@/components/BreadCrumb";
+import { useAuthStore } from "@/stores/authStore";
 
 // Route
 export const Route = createFileRoute("/transfer")({
+  beforeLoad: async () => {
+    const { isAuthenticated, loading, fetchMe } = useAuthStore.getState();
+    if (loading) {
+      await fetchMe();
+    }
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", replace: true });
+    }
+  },
   component: TransferPage,
 });
 

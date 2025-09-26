@@ -1,33 +1,10 @@
-import { apiKey } from "@/services/api";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import axios from "axios";
+import { useAuthStore } from "@/stores/authStore";
+import { Link, useLocation } from "@tanstack/react-router";
 import { LoaderPinwheel, LogOut, User } from "lucide-react";
 
 const Navbar = () => {
+  const { logout, user } = useAuthStore();
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleLogOut = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("No token found");
-
-      await axios.post(
-        `${apiKey}logout`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      localStorage.removeItem("token");
-      navigate({ to: "/login" });
-    } catch (error) {
-      console.error("Logout failed:", error);
-      // Optionally show a toast/notification
-      alert("Failed to log out. Please try again.");
-    }
-  };
 
   return (
     <div
@@ -49,9 +26,9 @@ const Navbar = () => {
       <div className="flex items-center space-x-8">
         <div className="md:flex hidden items-center space-x-2 font-bold">
           <User size={20} />
-          <p>Lorem</p>
+          <p>{user?.display_name}</p>
         </div>
-        <LogOut onClick={handleLogOut} className="cursor-pointer" size={20} />
+        <LogOut onClick={logout} className="cursor-pointer" size={20} />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   createFileRoute,
+  redirect,
   useNavigate,
   useSearch,
 } from "@tanstack/react-router";
@@ -8,11 +9,21 @@ import z from "zod";
 import Chapa from "@/components/withdraw/Chapa";
 import Manual from "@/components/withdraw/Manual";
 import BreadCrumb from "@/components/BreadCrumb";
+import { useAuthStore } from "@/stores/authStore";
 
 // valid methods
 const methodSchema = z.enum(["chapa", "manual"]);
 
 export const Route = createFileRoute("/withdraw")({
+  beforeLoad: async () => {
+    const { isAuthenticated, loading, fetchMe } = useAuthStore.getState();
+    if (loading) {
+      await fetchMe();
+    }
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", replace: true });
+    }
+  },
   validateSearch: z.object({
     method: methodSchema.optional(),
   }),
@@ -20,6 +31,7 @@ export const Route = createFileRoute("/withdraw")({
 });
 
 function WithdrawPage() {
+  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const search = useSearch({ from: "/withdraw" });
@@ -35,6 +47,10 @@ function WithdrawPage() {
   return (
     <div className="max-w-lg mx-auto flex flex-col mt-10">
       <BreadCrumb route="Withdraw" />
+
+      <p className="mb-4 font-bold text-sky-500 text-xl">
+        Your Current Balance is : {user?.wallet.toLocaleString()}
+      </p>
 
       <p className="text-xl mb-5 font-semibold">Withdraw Money</p>
 

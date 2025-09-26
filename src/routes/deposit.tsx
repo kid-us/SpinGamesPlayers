@@ -2,8 +2,10 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Chapa from "@/components/deposit/Chapa";
 import Manual from "@/components/deposit/Manual";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/stores/authStore";
 import {
   createFileRoute,
+  redirect,
   useNavigate,
   useSearch,
 } from "@tanstack/react-router";
@@ -13,6 +15,15 @@ import { z } from "zod";
 const methodSchema = z.enum(["chapa", "manual"]);
 
 export const Route = createFileRoute("/deposit")({
+  beforeLoad: async () => {
+    const { isAuthenticated, loading, fetchMe } = useAuthStore.getState();
+    if (loading) {
+      await fetchMe();
+    }
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", replace: true });
+    }
+  },
   validateSearch: z.object({
     method: methodSchema.optional(),
   }),
@@ -20,6 +31,7 @@ export const Route = createFileRoute("/deposit")({
 });
 
 function DepositPage() {
+  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const search = useSearch({ from: "/deposit" });
@@ -35,6 +47,10 @@ function DepositPage() {
   return (
     <div className="max-w-lg mx-auto flex flex-col mt-10">
       <BreadCrumb route="Deposit" />
+
+      <p className="mb-4 font-bold text-sky-500 text-xl">
+        Your Current Balance is : {user?.wallet.toLocaleString()}
+      </p>
 
       <p className="text-xl mb-5 font-semibold">Deposit Money</p>
 

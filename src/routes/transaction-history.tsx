@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { formatDate } from "./game-history";
 import BreadCrumb from "@/components/BreadCrumb";
 import { useEffect, useState } from "react";
@@ -24,9 +24,19 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Minus, Plus } from "lucide-react";
+import { useAuthStore } from "@/stores/authStore";
 
 // Route
 export const Route = createFileRoute("/transaction-history")({
+  beforeLoad: async () => {
+    const { isAuthenticated, loading, fetchMe } = useAuthStore.getState();
+    if (loading) {
+      await fetchMe();
+    }
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", replace: true });
+    }
+  },
   component: TransactionHistoryPage,
 });
 

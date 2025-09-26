@@ -24,6 +24,7 @@ import { Eye, EyeOff, House, Loader } from "lucide-react";
 import axios from "axios";
 import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
+import { useAuthStore } from "@/stores/authStore";
 
 const loginSchema = z.object({
   phone: z
@@ -36,6 +37,7 @@ const loginSchema = z.object({
 type LoginValues = z.infer<typeof loginSchema>;
 
 function Login() {
+  const { setToken } = useAuthStore();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -70,6 +72,7 @@ function Login() {
             duration: 6000,
           });
 
+          setToken(response.data.session_token);
           localStorage.setItem("token", response.data.session_token);
           // After Login
           navigate({ to: `/` });

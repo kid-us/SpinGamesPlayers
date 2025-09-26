@@ -9,11 +9,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { mockGameHistory } from "@/data/data";
+import { useAuthStore } from "@/stores/authStore";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 // Route
 export const Route = createFileRoute("/game-history")({
+  beforeLoad: async () => {
+    const { isAuthenticated, loading, fetchMe } = useAuthStore.getState();
+    if (loading) {
+      await fetchMe();
+    }
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", replace: true });
+    }
+  },
   component: GameHistoryPage,
 });
 

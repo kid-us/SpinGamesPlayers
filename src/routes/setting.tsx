@@ -1,5 +1,5 @@
 import BreadCrumb from "@/components/BreadCrumb";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,14 +15,23 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
-import { useAuth } from "@/hook/useAuth";
 import { apiKey, token } from "@/services/api";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import ChangePassword from "@/components/ChangePassword";
+import { useAuthStore } from "@/stores/authStore";
 
 // Route
 export const Route = createFileRoute("/setting")({
+  beforeLoad: async () => {
+    const { isAuthenticated, loading, fetchMe } = useAuthStore.getState();
+    if (loading) {
+      await fetchMe();
+    }
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", replace: true });
+    }
+  },
   component: SettingPage,
 });
 
@@ -45,7 +54,7 @@ export const registerSchema = z.object({
 type RegisterValues = z.infer<typeof registerSchema>;
 
 function SettingPage() {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
