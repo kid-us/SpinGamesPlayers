@@ -1,5 +1,5 @@
 // Login Route
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 export const Route = createFileRoute("/login")({
   component: Login,
@@ -21,15 +21,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, House, Loader } from "lucide-react";
+import axios from "axios";
+import { apiKey } from "@/services/api";
+import { toast, Toaster } from "sonner";
 
 const loginSchema = z.object({
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(10, "Phone number must be at least 10 digits"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type LoginValues = z.infer<typeof loginSchema>;
 
 function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginValues>({
@@ -43,13 +50,46 @@ function Login() {
   const { isSubmitting } = form.formState;
 
   // On Submit
-  const onSubmit = (values: LoginValues) => {
-    console.log("Sign-in attempted with:", values);
-    // navigate({ to: "/" });
+  const onSubmit = async (values: LoginValues) => {
+    const data = {
+      phone_number: values.phone,
+      password: values.password,
+    };
+
+    try {
+      await axios
+        .post(`${apiKey}login`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          // Success toast
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+
+          localStorage.setItem("token", response.data.session_token);
+          // After Login
+          navigate({ to: `/` });
+        });
+    } catch (error: any) {
+      // Error toast
+      toast.error(
+        error.response?.data?.error || "Registration failed. Please try again.",
+        {
+          className: "!bg-red-500 !text-white",
+          duration: 6000,
+        }
+      );
+    }
   };
 
   return (
     <div className={`flex items-center justify-center min-h-screen`}>
+      <Toaster />
+
       {/* Return back to Home */}
       <Link
         to="/"
