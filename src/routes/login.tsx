@@ -104,8 +104,9 @@ function Login() {
           Sign in to Spin Games
         </h2>
         <div className="flex justify-center">
-          <p className="w-60 mb-8 text-zinc-500 text-sm text-center mt-3">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          <p className="w-54 mb-8 text-zinc-500 text-xs text-center mt-3">
+            Craft Your Challenge, Wager Your Skill, and Rise to Riches in Every
+            Game!"
           </p>
         </div>
 
