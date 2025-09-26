@@ -52,6 +52,7 @@ const Manual = () => {
       method: values.depositMethod,
       transaction_id: values.tx,
     };
+
     try {
       await axios
         .post(`${apiKey}manual-deposit`, data, {

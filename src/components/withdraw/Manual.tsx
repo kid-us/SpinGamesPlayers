@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cbe, telebirr } from "@/assets";
+import axios from "axios";
+import { apiKey, token } from "@/services/api";
+import { toast, Toaster } from "sonner";
 
 const depositSchema = z.object({
   accountNo: z.string().min(6, "Account Number required"),
@@ -46,13 +49,44 @@ const Manual = () => {
   const { isSubmitting } = form.formState;
 
   // On Submit
-  const onSubmit = (values: DepositValues) => {
-    console.log("Sign-in attempted with:", values);
-    // navigate({ to: "/" });
+  const onSubmit = async (values: DepositValues) => {
+    const data = {
+      method: values.depositMethod,
+      amount: values.amount,
+      account_name: "string",
+      account_number: values.accountNo,
+    };
+
+    try {
+      await axios
+        .post(`${apiKey}manual-withdraw`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // Reset Form
+          form.reset();
+
+          // Success toast
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+        });
+    } catch (error: any) {
+      // Error toast
+      toast.error(error.response?.data?.error, {
+        className: "!bg-red-500 !text-white",
+        duration: 6000,
+      });
+    }
   };
 
   return (
     <Form {...form}>
+      <Toaster />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         {/* AccountNo */}
         <FormField
@@ -134,7 +168,7 @@ const Manual = () => {
           type="submit"
           className={`w-full h-11 mt-3`}
         >
-          {isSubmitting ? <Loader className="animate-spin" /> : "Deposit"}
+          {isSubmitting ? <Loader className="animate-spin" /> : "Withdraw"}
         </Button>
       </form>
     </Form>
