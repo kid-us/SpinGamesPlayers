@@ -51,7 +51,7 @@ export const Route = createFileRoute("/otp")({
 
 function OTPPage() {
   // Use useSearch with the SearchParams type
-  const searchParams = useSearch({ from: "/otp" }) as SearchParams; // Explicitly cast if needed
+  const searchParams = useSearch({ from: "/otp" }) as SearchParams;
   const navigate = useNavigate();
 
   const uid = searchParams.uid;
