@@ -46,7 +46,7 @@ function TransferPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col justify-center h-screen">
+    <div className="max-w-lg mx-auto flex flex-col mt-10">
       <p className="text-xl mb-5 font-semibold">Transfer Money</p>
 
       <Form {...form}>

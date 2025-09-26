@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 export const Route = createFileRoute("/register")({
   component: Register,
 });
@@ -20,6 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, House, Loader } from "lucide-react";
 import { useState } from "react";
+import axios from "axios";
+import { toast, Toaster } from "sonner";
+import { apiKey } from "@/services/api";
 
 export const registerSchema = z
   .object({
@@ -34,7 +37,7 @@ export const registerSchema = z
     phone: z
       .string()
       .min(10, "Phone number must be at least 10 digits")
-      .max(15, "Phone number cannot exceed 15 digits"),
+      .max(10, "Phone number cannot exceed 15 digits"),
     password: z
       .string()
       .min(6, "Password must be at least 6 characters")
@@ -52,6 +55,8 @@ export const registerSchema = z
 type RegisterValues = z.infer<typeof registerSchema>;
 
 function Register() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<RegisterValues>({
@@ -67,15 +72,49 @@ function Register() {
   const { isSubmitting } = form.formState;
 
   // On Submit
-  const onSubmit = (values: RegisterValues) => {
-    console.log("Sign-in attempted with:", values);
-    // navigate({ to: "/" });
+  const onSubmit = async (values: RegisterValues) => {
+    const data = {
+      display_name: values.username,
+      tiktok_handle: values.tikTokUsername,
+      phone_number: values.phone,
+      password: values.password,
+    };
+
+    try {
+      await axios
+        .post(`${apiKey}register`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          // Success toast
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+
+          // After successfully logged in redirect to otp page
+          navigate({ to: `/otp?uid=${response.data.uid}` });
+        });
+    } catch (error: any) {
+      // Error toast
+      toast.error(
+        error.response?.data?.error || "Registration failed. Please try again.",
+        {
+          className: "!bg-red-500 !text-white",
+          duration: 6000,
+        }
+      );
+    }
   };
 
   return (
     <div
-      className={`flex items-center justify-center min-h-screen md:py-0 pb-10 mt-16`}
+      className={`flex items-center justify-center min-h-screen md:py-0 pb-10 md:mt-0 mt-16`}
     >
+      <Toaster />
+
       {/* Return back to Home */}
       <Link
         to="/"

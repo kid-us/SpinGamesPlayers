@@ -9,6 +9,7 @@ type RoutePath =
   | "/withdraw"
   | "/transaction-history"
   | "/game-history"
+  | "/transfer"
   | "/setting";
 
 const routes: { id: number; path: RoutePath }[] = [
@@ -16,7 +17,8 @@ const routes: { id: number; path: RoutePath }[] = [
   { id: 2, path: "/withdraw" },
   { id: 3, path: "/transaction-history" },
   { id: 4, path: "/game-history" },
-  { id: 5, path: "/setting" },
+  { id: 5, path: "/transfer" },
+  { id: 6, path: "/setting" },
 ];
 
 function HomePage() {
