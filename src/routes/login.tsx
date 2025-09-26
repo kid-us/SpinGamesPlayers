@@ -106,7 +106,7 @@ function Login() {
         <div className="flex justify-center">
           <p className="w-54 mb-8 text-zinc-500 text-xs text-center mt-3">
             Craft Your Challenge, Wager Your Skill, and Rise to Riches in Every
-            Game!"
+            Game!
           </p>
         </div>
 
