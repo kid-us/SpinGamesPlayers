@@ -34,8 +34,9 @@ const Navbar = () => {
       className={`max-w-lg mx-auto flex items-center justify-between py-3 border-b border-zinc-200 ${
         location.pathname === "/login" ||
         location.pathname === "/register" ||
-        "/otp" ||
-        "reset-password"
+        location.pathname === "/otp" ||
+        location.pathname === "reset-password" ||
+        location.pathname === "/forget-password"
           ? "hidden"
           : ""
       }`}

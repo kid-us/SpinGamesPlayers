@@ -14,6 +14,10 @@ import {
 import { Input } from "@/components/ui/input";
 // import axios from "axios";
 import { createFileRoute } from "@tanstack/react-router";
+import axios from "axios";
+import { apiKey, token } from "@/services/api";
+import { toast, Toaster } from "sonner";
+import BreadCrumb from "@/components/BreadCrumb";
 
 // Route
 export const Route = createFileRoute("/transfer")({
@@ -24,7 +28,7 @@ const transferSchema = z.object({
   phone: z
     .string()
     .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number cannot exceed 15 digits"),
+    .max(10, "Phone number must be at least 10 digits"),
   amount: z.string().min(2, "Minimum amount must be 50"),
 });
 
@@ -41,12 +45,45 @@ function TransferPage() {
 
   const { isSubmitting } = form.formState;
 
-  const onSubmit = (values: TransferValues) => {
-    console.log("Withdraw attempted with:", values);
+  const onSubmit = async (values: TransferValues) => {
+    const data = {
+      recipient_phone_number: values.phone,
+      amount: Number(values.amount),
+    };
+
+    try {
+      await axios
+        .post(`${apiKey}transfer-fund`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // Reset Form
+          form.reset();
+
+          // Success toast
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+        });
+    } catch (error: any) {
+      console.log(error);
+      // Error toast
+      toast.error(error.response?.data?.detail, {
+        className: "!bg-red-500 !text-white",
+        duration: 6000,
+      });
+    }
   };
 
   return (
     <div className="max-w-lg mx-auto flex flex-col mt-10">
+      <Toaster />
+      <BreadCrumb route="Transfer" />
+
       <p className="text-xl mb-5 font-semibold">Transfer Money</p>
 
       <Form {...form}>
