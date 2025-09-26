@@ -1,3 +1,4 @@
+import { useAuth } from "@/hook/useAuth";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -22,6 +23,10 @@ const routes: { id: number; path: RoutePath }[] = [
 ];
 
 function HomePage() {
+  const { user } = useAuth();
+
+  console.log(user);
+
   return (
     <div className="max-w-lg mx-auto flex flex-col mt-10 md:px-2">
       <p className="text-lg">

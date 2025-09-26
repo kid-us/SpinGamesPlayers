@@ -1,7 +1,7 @@
 import { apiKey } from "@/services/api";
 import { useState, useEffect } from "react";
 
-interface User {
+export interface User {
   display_name: string;
   id: number;
   phone_number: string;
@@ -26,7 +26,7 @@ export function useAuth() {
 
         if (!response.ok) throw new Error("Unauthorized");
         const data = await response.json();
-        setUser(data);
+        setUser(data.user);
       } catch (err) {
         setError("Not authenticated");
         setUser(null);

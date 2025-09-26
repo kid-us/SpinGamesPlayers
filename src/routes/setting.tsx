@@ -1,6 +1,5 @@
 import BreadCrumb from "@/components/BreadCrumb";
 import { createFileRoute } from "@tanstack/react-router";
-
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,69 +13,138 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader } from "lucide-react";
-import { useState } from "react";
+import { Loader } from "lucide-react";
+import { useEffect } from "react";
+import { useAuth } from "@/hook/useAuth";
+import { apiKey, token } from "@/services/api";
+import axios from "axios";
+import { Toaster, toast } from "sonner";
 
 // Route
 export const Route = createFileRoute("/setting")({
   component: SettingPage,
 });
 
-export const registerSchema = z
-  .object({
-    username: z
-      .string()
-      .min(3, "Username must be at least 3 characters")
-      .max(50, "Username cannot exceed 50 characters"),
-    tikTokUsername: z
-      .string()
-      .min(3, "TikTok username must be at least 3 characters")
-      .max(50, "TikTok username cannot exceed 50 characters"),
-    phone: z
-      .string()
-      .min(10, "Phone number must be at least 10 digits")
-      .max(15, "Phone number cannot exceed 15 digits"),
-    password: z
-      .string()
-      .min(6, "Password must be at least 6 characters")
-      .max(100, "Password cannot exceed 100 characters"),
-    confirmPassword: z
-      .string()
-      .min(6, "Confirm Password must be at least 6 characters")
-      .max(100, "Confirm Password cannot exceed 100 characters"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Passwords must match",
-  });
+// Zod schema for form validation
+export const registerSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(50, "Username cannot exceed 50 characters"),
+  tikTokUsername: z
+    .string()
+    .min(3, "TikTok username must be at least 3 characters")
+    .max(50, "TikTok username cannot exceed 50 characters"),
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15, "Phone number cannot exceed 15 digits"),
+});
 
 type RegisterValues = z.infer<typeof registerSchema>;
 
 function SettingPage() {
-  const [showPassword, setShowPassword] = useState(false);
+  const { user } = useAuth();
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       phone: "",
-      password: "",
       username: "",
-      confirmPassword: "",
+      tikTokUsername: "",
     },
   });
 
+  // Update the user values
+  useEffect(() => {
+    if (user) {
+      form.setValue("username", user.display_name || "");
+      form.setValue("tikTokUsername", user.tiktok_handle || "");
+      form.setValue("phone", user.phone_number || "");
+    }
+  }, [user, form]);
+
   const { isSubmitting } = form.formState;
 
-  // On Submit
-  const onSubmit = (values: RegisterValues) => {
-    console.log("Sign-in attempted with:", values);
-    // navigate({ to: "/" });
+  // Watch form values to determine if changes have been made
+  const watchedValues = form.watch();
+  const hasChanges =
+    user &&
+    (user.display_name !== watchedValues.username ||
+      user.tiktok_handle !== watchedValues.tikTokUsername);
+
+  // Handle form submission
+  const onSubmit = async (values: RegisterValues) => {
+    if (!token || !user || !hasChanges) {
+      toast.error("No authentication token found or no changes made.");
+      return;
+    }
+
+    try {
+      const requests: Promise<any>[] = [];
+
+      // Update Username
+      if (user.display_name !== values.username) {
+        requests.push(
+          axios.post(
+            `${apiKey}update-display-name?new_display_name=${values.username}`,
+            {},
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+        );
+      }
+
+      // Update TikTok Handle
+      if (user.tiktok_handle !== values.tikTokUsername) {
+        requests.push(
+          axios.post(
+            `${apiKey}update-tiktok-handle?new_tiktok_handle=${values.tikTokUsername}`, // Fixed to use tikTokUsername
+            {},
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+        );
+      }
+
+      // Wait for all requests to complete
+      const responses = await Promise.all(requests);
+
+      // Show success messages for all completed requests
+      responses.forEach((response) => {
+        toast.success(response.data.message, {
+          className: "!bg-green-500 !text-white",
+          duration: 6000,
+        });
+      });
+    } catch (error: any) {
+      // Handle errors
+      toast.error(
+        error.response?.data?.error || "Update failed. Please try again.",
+        {
+          className: "!bg-red-500 !text-white",
+          duration: 6000,
+        }
+      );
+    }
   };
+
+  // Disable button if no user, submitting, or no changes made
+  const isButtonDisabled = !user || isSubmitting || !hasChanges;
 
   return (
     <div className="max-w-lg mx-auto flex flex-col mt-10">
-      <BreadCrumb route="Setting" />
+      <Toaster />
 
+      <BreadCrumb route="Setting" />
       <p className="text-xl mb-5 font-semibold">Setting</p>
 
       <Form {...form}>
@@ -134,6 +202,7 @@ function SettingPage() {
                     placeholder="09/07 ..."
                     {...field}
                     className="border border-border h-10"
+                    disabled
                   />
                 </FormControl>
                 <FormMessage />
@@ -141,76 +210,26 @@ function SettingPage() {
             )}
           />
 
-          {/* Password with Show/Hide */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs">Password</FormLabel>
-                <div className="relative">
-                  <FormControl>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      className="border border-border h-10 pr-10"
-                      {...field}
-                    />
-                  </FormControl>
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className={`absolute inset-y-0 right-3 flex items-center `}
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Confirm Password */}
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs">Confirm Password</FormLabel>
-                <div className="relative">
-                  <FormControl>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      className="border border-border h-10 pr-10"
-                      {...field}
-                    />
-                  </FormControl>
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className={`absolute inset-y-0 right-3 flex items-center `}
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Submit */}
+          {/* Submit Button */}
           <Button
-            disabled={isSubmitting}
+            disabled={isButtonDisabled}
             type="submit"
-            className={`w-full h-11 mt-3`}
+            className={`w-full h-11 mt-3 ${
+              !hasChanges && user && !isSubmitting
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
           >
-            {isSubmitting ? <Loader className="animate-spin" /> : "Update"}
+            {isSubmitting ? (
+              <Loader className="animate-spin mr-2" size={16} />
+            ) : (
+              "Update"
+            )}
           </Button>
         </form>
       </Form>
     </div>
   );
 }
+
+export default SettingPage;

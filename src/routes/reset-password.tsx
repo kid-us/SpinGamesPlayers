@@ -14,8 +14,11 @@ import {
 import { Input } from "@/components/ui/input";
 // import axios from "axios";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { toast, Toaster } from "sonner";
+import axios from "axios";
+import { apiKey } from "@/services/api";
 
 // Route
 export const Route = createFileRoute("/reset-password")({
@@ -23,6 +26,10 @@ export const Route = createFileRoute("/reset-password")({
 });
 
 const resetPasswordSchema = z.object({
+  oldPassword: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .max(100, "Password cannot exceed 100 characters"),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -32,24 +39,63 @@ const resetPasswordSchema = z.object({
 type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 function ResetPasswordPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
+      oldPassword: "",
       password: "",
     },
   });
 
   const { isSubmitting } = form.formState;
 
-  const onSubmit = (values: ResetPasswordValues) => {
-    console.log("Withdraw attempted with:", values);
+  const onSubmit = async (values: ResetPasswordValues) => {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token");
+
+    const data = {
+      old_password: values.oldPassword,
+      new_password: values.password,
+    };
+
+    try {
+      await axios
+        .post(`${apiKey}change-password`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // Success toast
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+
+          localStorage.clear();
+          // After Login
+          navigate({ to: `/login` });
+        });
+    } catch (error: any) {
+      // Error toast
+      toast.error(
+        error.response?.data?.error || "Registration failed. Please try again.",
+        {
+          className: "!bg-red-500 !text-white",
+          duration: 6000,
+        }
+      );
+    }
   };
 
   return (
     <>
-      <div className={`flex flex-col items-center justify-center min-h-screen`}>
+      <Toaster />
+      <div className={`flex flex-col items-center justify-center mt-10`}>
         <div className={`md:max-w-sm w-[95%] p-8 rounded-lg border`}>
           <p className="text-xl mb-5 font-semibold">Create your new password</p>
 
@@ -58,13 +104,13 @@ function ResetPasswordPage() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="mt-5 space-y-4"
             >
-              {/* Phone Number */}
+              {/* Old Password */}
               <FormField
                 control={form.control}
-                name="password"
+                name="oldPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xs">Password</FormLabel>
+                    <FormLabel className="text-xs">Old Password</FormLabel>
                     <FormControl className="relative">
                       <div className="">
                         <Input
@@ -85,6 +131,27 @@ function ResetPasswordPage() {
                             className="absolute top-3 right-3 cursor-pointer"
                           />
                         )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* New Password */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">New Password</FormLabel>
+                    <FormControl className="relative">
+                      <div className="">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          {...field}
+                          className={`border border-border h-10`}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
