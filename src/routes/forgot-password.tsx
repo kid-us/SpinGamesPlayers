@@ -60,7 +60,9 @@ function ForgotPasswordPage() {
           });
 
           // After Login
-          navigate({ to: `/reset-password` });
+          navigate({
+            to: `/reset-password?uid=${response.data.uid}`,
+          });
         });
     } catch (error: any) {
       // Error toast
