@@ -76,13 +76,10 @@ function Login() {
         });
     } catch (error: any) {
       // Error toast
-      toast.error(
-        error.response?.data?.error || "Registration failed. Please try again.",
-        {
-          className: "!bg-red-500 !text-white",
-          duration: 6000,
-        }
-      );
+      toast.error(error.response?.data?.error, {
+        className: "!bg-red-500 !text-white",
+        duration: 6000,
+      });
     }
   };
 
