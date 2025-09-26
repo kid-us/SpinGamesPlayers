@@ -19,6 +19,7 @@ import { useAuth } from "@/hook/useAuth";
 import { apiKey, token } from "@/services/api";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
+import ChangePassword from "@/components/ChangePassword";
 
 // Route
 export const Route = createFileRoute("/setting")({
@@ -228,6 +229,8 @@ function SettingPage() {
           </Button>
         </form>
       </Form>
+
+      <ChangePassword />
     </div>
   );
 }
