@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cbe, telebirr } from "@/assets";
+import { toast, Toaster } from "sonner";
+import axios from "axios";
+import { apiKey, token } from "@/services/api";
 
 const depositSchema = z.object({
   tx: z.string().min(6, "Transaction ID required."),
@@ -44,13 +47,38 @@ const Manual = () => {
   const { isSubmitting } = form.formState;
 
   // On Submit
-  const onSubmit = (values: DepositValues) => {
-    console.log("Sign-in attempted with:", values);
-    // navigate({ to: "/" });
+  const onSubmit = async (values: DepositValues) => {
+    const data = {
+      method: values.depositMethod,
+      transaction_id: values.tx,
+    };
+    try {
+      await axios
+        .post(`${apiKey}manual-deposit`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // Success toast
+          toast.success(response.data.message, {
+            className: "!bg-green-500 !text-white",
+            duration: 6000,
+          });
+        });
+    } catch (error: any) {
+      // Error toast
+      toast.error(error.response?.data?.error, {
+        className: "!bg-red-500 !text-white",
+        duration: 6000,
+      });
+    }
   };
 
   return (
     <Form {...form}>
+      <Toaster />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         {/* Transaction methods */}
         <FormField
