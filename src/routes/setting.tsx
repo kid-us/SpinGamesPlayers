@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import ChangePassword from "@/components/ChangePassword";
@@ -55,7 +55,7 @@ export const registerSchema = z.object({
 type RegisterValues = z.infer<typeof registerSchema>;
 
 function SettingPage() {
-  const { user, fetchMe } = useAuthStore();
+  const { user, fetchMe, token } = useAuthStore();
   const [title, _setTitle] = useState("Setting - LiveJam");
 
   useDocumentTitle(title);

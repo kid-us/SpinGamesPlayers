@@ -14,8 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { cbe, telebirr } from "@/assets";
 import axios from "axios";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
+import { useAuthStore } from "@/stores/authStore";
 
 const depositSchema = z.object({
   accountNo: z.string().min(6, "Account Number required"),
@@ -37,6 +38,8 @@ const depositMethods: Methods[] = [
 ];
 
 const Manual = () => {
+  const { token } = useAuthStore();
+
   const form = useForm<DepositValues>({
     resolver: zodResolver(depositSchema),
     defaultValues: {

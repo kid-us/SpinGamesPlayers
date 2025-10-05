@@ -15,7 +15,8 @@ import { Input } from "@/components/ui/input";
 import { cbe, telebirr } from "@/assets";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
+import { useAuthStore } from "@/stores/authStore";
 
 const depositSchema = z.object({
   tx: z.string().min(6, "Transaction ID required."),
@@ -36,6 +37,8 @@ const depositMethods: Methods[] = [
 ];
 
 const Manual = () => {
+  const { token } = useAuthStore();
+
   const form = useForm<DepositValues>({
     resolver: zodResolver(depositSchema),
     defaultValues: {

@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
 import { useAuthStore } from "@/stores/authStore";
 import type { GameHistory } from "@/types/types";
 
@@ -53,6 +53,7 @@ function GameHistoryPage() {
   const [history, setHistory] = useState<GameHistory>();
   const [page, setPage] = useState<number>(1);
   const [title, _setTitle] = useState("Game History - LiveJam");
+  const { token } = useAuthStore();
 
   useDocumentTitle(title);
 

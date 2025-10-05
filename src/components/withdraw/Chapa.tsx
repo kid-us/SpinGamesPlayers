@@ -21,8 +21,9 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
+import { useAuthStore } from "@/stores/authStore";
 
 const chapaWithdrawSchema = z.object({
   name: z.string().min(3, "Account Holder name required"),
@@ -40,6 +41,7 @@ type ChapaWithdrawValues = z.infer<typeof chapaWithdrawSchema>;
 
 const Chapa = () => {
   const [banks, setBanks] = useState<Banks[]>([]);
+  const { token } = useAuthStore();
 
   // Fetch banks
   useEffect(() => {

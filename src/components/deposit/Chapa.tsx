@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
+import { useAuthStore } from "@/stores/authStore";
 
 const depositSchema = z.object({
   amount: z.string().min(2, "Amount must be >=50"),
@@ -23,6 +24,8 @@ const depositSchema = z.object({
 type DepositValues = z.infer<typeof depositSchema>;
 
 const Chapa = () => {
+  const { token } = useAuthStore();
+
   const form = useForm<DepositValues>({
     resolver: zodResolver(depositSchema),
     defaultValues: {
@@ -53,7 +56,7 @@ const Chapa = () => {
             duration: 6000,
           });
           console.log(response);
-          
+
           // window.location.href = response.data.checkout_url;
         });
     } catch (error: any) {

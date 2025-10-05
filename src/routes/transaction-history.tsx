@@ -12,7 +12,7 @@ import { formatDate } from "./game-history";
 import BreadCrumb from "@/components/BreadCrumb";
 import { useEffect, useState } from "react";
 import type { TransactionHistory } from "@/types/types";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
 import axios from "axios";
 
 import {
@@ -45,6 +45,7 @@ function TransactionHistoryPage() {
   const [page, setPage] = useState<number>(1);
   const [history, setHistory] = useState<TransactionHistory>();
   const [title, _setTitle] = useState("Transaction History - LiveJam");
+  const { token } = useAuthStore();
 
   useDocumentTitle(title);
 

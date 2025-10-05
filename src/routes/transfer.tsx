@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 // import axios from "axios";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import axios from "axios";
-import { apiKey, token } from "@/services/api";
+import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
 import BreadCrumb from "@/components/BreadCrumb";
 import { useAuthStore } from "@/stores/authStore";
@@ -47,6 +47,7 @@ const transferSchema = z.object({
 type TransferValues = z.infer<typeof transferSchema>;
 
 function TransferPage() {
+  const { token } = useAuthStore();
   const [title, _setTitle] = useState("Transfer Money - LiveJam");
 
   useDocumentTitle(title);
@@ -68,25 +69,23 @@ function TransferPage() {
     };
 
     try {
-      await axios
-        .post(`${apiKey}transfer-fund`, data, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          // Success toast
-          toast.success(response.data.message, {
-            className: "!bg-green-500 !text-white",
-            duration: 6000,
-          });
-          // Reset Form
-          form.reset();
-        });
+      const response = await axios.post(`${apiKey}transfer-fund`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      // Success toast
+      toast.success(response.data.message, {
+        className: "!bg-green-500 !text-white",
+        duration: 6000,
+      });
+
+      // Reset form
+      form.reset();
     } catch (error: any) {
-      // Error toast
-      toast.error(error.response?.data?.detail, {
+      toast.error(error.response?.data?.detail || "Transfer failed", {
         className: "!bg-red-500 !text-white",
         duration: 6000,
       });
