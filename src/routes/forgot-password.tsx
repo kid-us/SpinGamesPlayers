@@ -17,6 +17,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
+import { useState } from "react";
 
 // Route
 export const Route = createFileRoute("/forgot-password")({
@@ -34,6 +36,9 @@ type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 function ForgotPasswordPage() {
   const navigate = useNavigate();
+  const [title, _setTitle] = useState("Forgot Password - LiveJam");
+
+  useDocumentTitle(title);
 
   const form = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -78,7 +83,9 @@ function ForgotPasswordPage() {
       <Toaster />
 
       <div className={`md:max-w-sm w-[95%] p-8 rounded-lg border`}>
-        <p className="text-xl mb-5 font-semibold">Forgot your password?</p>
+        <p className="text-xl mb-5 font-semibold text-secondary">
+          Forgot your password?
+        </p>
         <p className="text-zinc-500 text-sm">
           No problem! Just enter the phone number that you signed up with to
           reset it.

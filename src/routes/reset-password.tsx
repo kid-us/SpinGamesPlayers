@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 import { apiKey } from "@/services/api";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 // Define the expected shape of search parameters
 interface SearchParams {
@@ -58,6 +59,10 @@ type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 function ResetPasswordPage() {
   const searchParams = useSearch({ from: "/reset-password" }) as SearchParams;
   const navigate = useNavigate();
+
+  const [title, _setTitle] = useState("Reset Password - LiveJam");
+
+  useDocumentTitle(title);
 
   const uid = searchParams.uid;
 
@@ -135,7 +140,9 @@ function ResetPasswordPage() {
         className={`flex flex-col items-center justify-center h-screen mt-10`}
       >
         <div className={`md:max-w-sm w-[95%] p-8 rounded-lg border`}>
-          <p className="text-xl mb-5 font-semibold">Create your new password</p>
+          <p className="text-xl mb-5 font-semibold text-secondary">
+            Create your new password
+          </p>
 
           <Form {...form}>
             <form
@@ -175,7 +182,7 @@ function ResetPasswordPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xs">Password</FormLabel>
+                    <FormLabel className="text-xs">New Password</FormLabel>
                     <FormControl className="relative">
                       <div className="">
                         <Input
@@ -187,13 +194,13 @@ function ResetPasswordPage() {
                           <Eye
                             size={18}
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute top-3 right-3 cursor-pointer"
+                            className="absolute top-3 right-3 cursor-pointer text-secondary"
                           />
                         ) : (
                           <EyeOff
                             size={18}
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute top-3 right-3 cursor-pointer"
+                            className="absolute top-3 right-3 cursor-pointer text-secondary"
                           />
                         )}
                       </div>

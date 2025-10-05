@@ -55,7 +55,7 @@ export const registerSchema = z.object({
 type RegisterValues = z.infer<typeof registerSchema>;
 
 function SettingPage() {
-  const { user } = useAuthStore();
+  const { user, fetchMe } = useAuthStore();
   const [title, _setTitle] = useState("Setting - LiveJam");
 
   useDocumentTitle(title);
@@ -138,6 +138,8 @@ function SettingPage() {
           className: "!bg-green-500 !text-white",
           duration: 6000,
         });
+
+        fetchMe();
       });
     } catch (error: any) {
       // Handle errors

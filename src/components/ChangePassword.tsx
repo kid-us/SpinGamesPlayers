@@ -106,29 +106,25 @@ const ChangePassword = () => {
               name="oldPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs">Old Password</FormLabel>
-                  <FormControl className="relative">
-                    <div className="">
+                  <FormLabel className="text-xs mt-3">Password</FormLabel>
+                  <div className="relative">
+                    <FormControl>
                       <Input
                         type={showPassword ? "text" : "password"}
+                        placeholder="Enter your password"
+                        className="border border-border h-10 pr-10"
                         {...field}
-                        className={`border border-border h-10`}
                       />
-                      {!showPassword ? (
-                        <Eye
-                          size={18}
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute top-3 right-3 cursor-pointer"
-                        />
-                      ) : (
-                        <EyeOff
-                          size={18}
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute top-3 right-3 cursor-pointer"
-                        />
-                      )}
-                    </div>
-                  </FormControl>
+                    </FormControl>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className={`absolute inset-y-0 right-3 flex items-center text-secondary `}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -142,7 +138,7 @@ const ChangePassword = () => {
                 <FormItem>
                   <FormLabel className="text-xs">New Password</FormLabel>
                   <FormControl className="relative">
-                    <div className="">
+                    <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
                         {...field}
