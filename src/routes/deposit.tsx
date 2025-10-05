@@ -53,7 +53,7 @@ function DepositPage() {
     <div className="max-w-lg mx-auto flex flex-col">
       <BreadCrumb route="Deposit" />
 
-      <p className="mb-4 font-bold text-primary text-xl">
+      <p className="mb-4 font-bold text-primary text-lg">
         Your Current Balance is : {user?.wallet.toLocaleString()}
       </p>
 

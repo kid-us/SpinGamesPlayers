@@ -36,13 +36,13 @@ function HomePage() {
 
   return (
     <div className="max-w-lg mx-auto flex flex-col text-secondary md:px-2">
-      <p className="text-lg">
+      <p className="">
         Welcome back{" "}
-        <span className="text-primary font-bold text-xl">
+        <span className="text-primary font-bold text-lg">
           {user?.display_name}
         </span>{" "}
         Your current balance is{" "}
-        <span className="text-primary font-bold text-2xl">
+        <span className="text-primary font-bold text-lg">
           {user?.wallet.toLocaleString()}
         </span>{" "}
         ETB

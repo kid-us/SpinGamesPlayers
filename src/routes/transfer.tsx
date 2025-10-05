@@ -71,22 +71,20 @@ function TransferPage() {
       await axios
         .post(`${apiKey}transfer-fund`, data, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         })
         .then((response) => {
-          // Reset Form
-          form.reset();
-
           // Success toast
           toast.success(response.data.message, {
             className: "!bg-green-500 !text-white",
             duration: 6000,
           });
+          // Reset Form
+          form.reset();
         });
     } catch (error: any) {
-      console.log(error);
       // Error toast
       toast.error(error.response?.data?.detail, {
         className: "!bg-red-500 !text-white",

@@ -1,8 +1,18 @@
-export interface GameHistory {
-  gameName: string;
-  winnerUsername: string;
+export interface Game {
+  id: number;
   date: string;
-  winnerAmount: string | number;
+  amount: number;
+  reason: number;
+  sign: string;
+}
+
+export interface GameHistory {
+  game: Game[];
+  current_page: 1;
+  total_items: 0;
+  total_pages: 0;
+  has_next: false;
+  has_prev: false;
 }
 
 export interface History {
