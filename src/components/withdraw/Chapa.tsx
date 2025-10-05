@@ -29,7 +29,7 @@ const chapaWithdrawSchema = z.object({
   name: z.string().min(3, "Account Holder name required"),
   accountNo: z.string().min(6, "Account Number required"),
   amount: z.string().min(2, "Minimum amount must be 50"),
-  bank: z.string().min(8, "Bank Required"),
+  bank: z.string().nonempty("Bank required"),
 });
 
 interface Banks {
@@ -90,12 +90,12 @@ const Chapa = () => {
           },
         })
         .then((response) => {
-          // Reset Form
-          form.reset();
           toast.success(response.data.message, {
             className: "!bg-green-500 !text-white",
             duration: 6000,
           });
+          // Reset Form
+          form.reset();
         });
     } catch (error: any) {
       toast.error(error.response?.data?.error, {

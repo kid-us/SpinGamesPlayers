@@ -65,14 +65,14 @@ const Manual = () => {
           },
         })
         .then((response) => {
-          // Reset Form
-          form.reset();
-
           // Success toast
           toast.success(response.data.message, {
             className: "!bg-green-500 !text-white",
             duration: 6000,
           });
+
+          // Reset Form
+          form.reset();
         });
     } catch (error: any) {
       // Error toast
@@ -104,7 +104,7 @@ const Manual = () => {
                         field.value === methods.name ? "default" : "outline"
                       }
                       onClick={() => field.onChange(methods.name)}
-                      className="flex items-center gap-2 w-full h-11"
+                      className="flex items-center gap-2 w-full h-11 text-white"
                     >
                       <img
                         src={methods.img}
