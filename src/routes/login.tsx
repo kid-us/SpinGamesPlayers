@@ -155,7 +155,7 @@ function Login() {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className={`absolute inset-y-0 right-3 flex items-center `}
+                      className={`absolute inset-y-0 right-3 flex items-center text-primary`}
                       tabIndex={-1}
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}

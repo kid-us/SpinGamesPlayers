@@ -194,13 +194,13 @@ function ResetPasswordPage() {
                           <Eye
                             size={18}
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute top-3 right-3 cursor-pointer text-secondary"
+                            className="absolute top-3 right-3 cursor-pointer text-primary"
                           />
                         ) : (
                           <EyeOff
                             size={18}
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute top-3 right-3 cursor-pointer text-secondary"
+                            className="absolute top-3 right-3 cursor-pointer text-primary"
                           />
                         )}
                       </div>
