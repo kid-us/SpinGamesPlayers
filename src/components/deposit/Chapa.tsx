@@ -52,7 +52,9 @@ const Chapa = () => {
             className: "!bg-green-500 !text-white",
             duration: 6000,
           });
-          window.location.href = response.data.checkout_url;
+          console.log(response);
+          
+          // window.location.href = response.data.checkout_url;
         });
     } catch (error: any) {
       // Error toast

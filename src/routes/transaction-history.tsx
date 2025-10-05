@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/pagination";
 import { Minus, Plus } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 // Route
 export const Route = createFileRoute("/transaction-history")({
@@ -43,6 +44,9 @@ export const Route = createFileRoute("/transaction-history")({
 function TransactionHistoryPage() {
   const [page, setPage] = useState<number>(1);
   const [history, setHistory] = useState<TransactionHistory>();
+  const [title, _setTitle] = useState("Transaction History - LiveJam");
+
+  useDocumentTitle(title);
 
   // Transaction History
   useEffect(() => {
@@ -62,20 +66,22 @@ function TransactionHistoryPage() {
   }, [token, page]);
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col mt-10">
+    <div className="max-w-lg mx-auto flex flex-col">
       <BreadCrumb route="Transaction History" />
 
-      <p className="text-xl font-semibold">Transaction History</p>
+      <p className="text-xl font-semibold text-secondary">
+        Transaction History
+      </p>
       <p className="mb-5 mt-2 text-zinc-500 text-start">
         A list of Transaction History.
       </p>
-      <Table className="!rounded border">
-        <TableHeader className="bg-secondary">
+      <Table className="border border-border">
+        <TableHeader className="bg-foreground">
           <TableRow>
-            <TableHead className="w-[100px]">Status</TableHead>
-            <TableHead>Reason</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="w-[100px] text-secondary">Status</TableHead>
+            <TableHead className="text-secondary">Reason</TableHead>
+            <TableHead className="text-secondary">Date</TableHead>
+            <TableHead className="text-right text-secondary">Amount</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -90,10 +96,12 @@ function TransactionHistoryPage() {
                     {data.sign === "+" ? <Plus /> : <Minus />}
                   </p>
                 </TableCell>
-                <TableCell className="capitalize border overflow-hidden">
-                  <p className="w-60 text-wrap">{data.reason}</p>
+                <TableCell className="capitalize border overflow-hidden text-secondary">
+                  <p className="w-60 text-wrap text-secondary">{data.reason}</p>
                 </TableCell>
-                <TableCell>{formatDate(data.date)}</TableCell>
+                <TableCell className="text-secondary">
+                  {formatDate(data.date)}
+                </TableCell>
                 <TableCell
                   className={`${data.sign === "-" ? "text-red-500" : "text-green-500"} text-right font-semibold`}
                 >
@@ -116,14 +124,18 @@ function TransactionHistoryPage() {
                 else setPage(page - 1);
               }}
               className={
-                !history?.has_prev ? "pointer-events-none opacity-50" : ""
+                !history?.has_prev
+                  ? "pointer-events-none opacity-50 border text-secondary"
+                  : "border text-secondary"
               }
               aria-disabled={!history?.has_prev}
             />
           </PaginationItem>
 
           <PaginationItem>
-            <PaginationLink>{page}</PaginationLink>
+            <PaginationLink className="border text-secondary">
+              {page}
+            </PaginationLink>
           </PaginationItem>
 
           <PaginationItem>
@@ -134,7 +146,9 @@ function TransactionHistoryPage() {
                 else setPage(page + 1);
               }}
               className={
-                !history?.has_next ? "pointer-events-none opacity-50" : ""
+                !history?.has_next
+                  ? "pointer-events-none opacity-50 border text-secondary"
+                  : "border text-secondary"
               }
               aria-disabled={!history?.has_next}
             />

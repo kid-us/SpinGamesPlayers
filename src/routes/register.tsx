@@ -23,6 +23,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
 import { apiKey } from "@/services/api";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 export const registerSchema = z
   .object({
@@ -56,8 +57,10 @@ type RegisterValues = z.infer<typeof registerSchema>;
 
 function Register() {
   const navigate = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
+  const [title, _setTitle] = useState("Register - LiveJam");
+
+  useDocumentTitle(title);
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -118,18 +121,18 @@ function Register() {
       {/* Return back to Home */}
       <Link
         to="/"
-        className="absolute top-5 left-5 flex items-center space-x-1"
+        className="absolute top-5 left-5 flex items-center space-x-1 text-primary"
       >
         <House size={20} />
         <p>Home</p>
       </Link>
 
       <div className={`md:max-w-sm md:w-[95%] md:p-8 p-5 rounded-lg border`}>
-        <h2 className="text-2xl text-center font-semibold">
-          Be a Member to Spin Games
+        <h2 className="text-2xl text-center font-semibold text-secondary">
+          Be a Member to LiveJamGames
         </h2>
         <div className="flex justify-center">
-          <p className="w-60 mb-8 text-zinc-500 text-xs text-center mt-3">
+          <p className="w-60 mb-8 text-zinc-400 text-xs text-center mt-3">
             Craft Your Challenge, Wager Your Skill, and Rise to Riches in Every
             Game!"
           </p>
@@ -267,9 +270,9 @@ function Register() {
             </Button>
           </form>
         </Form>
-        <p className="mt-4 text-zinc-500 text-xs">
+        <p className="mt-4 text-zinc-400 text-xs">
           Already have an account?{" "}
-          <Link to={"/login"} className={`text-blue-500 underline text-sm`}>
+          <Link to={"/login"} className={`text-blue-400 underline text-sm`}>
             SignIn
           </Link>
         </p>

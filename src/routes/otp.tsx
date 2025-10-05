@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   createFileRoute,
   useNavigate,
@@ -26,6 +26,7 @@ import axios from "axios";
 import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
 import { Loader } from "lucide-react";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 // Define the expected shape of search parameters
 interface SearchParams {
@@ -53,6 +54,10 @@ function OTPPage() {
   // Use useSearch with the SearchParams type
   const searchParams = useSearch({ from: "/otp" }) as SearchParams;
   const navigate = useNavigate();
+
+  const [title, _setTitle] = useState("OTP - LiveJam");
+
+  useDocumentTitle(title);
 
   const uid = searchParams.uid;
 
@@ -130,7 +135,7 @@ function OTPPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col mt-10">
+    <div className="max-w-lg mx-auto flex flex-col items-center justify-center h-screen">
       <Toaster />
 
       <Form {...form}>

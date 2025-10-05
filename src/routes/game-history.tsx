@@ -2,16 +2,17 @@ import BreadCrumb from "@/components/BreadCrumb";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { mockGameHistory } from "@/data/data";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 import { useAuthStore } from "@/stores/authStore";
 
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useState } from "react";
 
 // Route
 export const Route = createFileRoute("/game-history")({
@@ -39,31 +40,43 @@ export const formatDate = (dateString: string): string => {
 };
 
 function GameHistoryPage() {
+  const [title, _setTitle] = useState("Game History - LiveJam");
+
+  useDocumentTitle(title);
+
   return (
-    <div className="max-w-lg mx-auto flex flex-col mt-10">
+    <div className="max-w-lg mx-auto flex flex-col">
       <BreadCrumb route="Game History" />
 
-      <p className="text-xl mb-5 font-semibold">Game History</p>
+      <p className="text-xl font-semibold text-secondary">Game History</p>
+      <p className="mb-5 mt-2 text-zinc-500 text-start">
+        A list of Game History.
+      </p>
       <Table className="!rounded border">
-        <TableCaption>A list of Game History.</TableCaption>
-        <TableHeader className="bg-secondary">
+        <TableHeader className="bg-foreground border">
           <TableRow>
-            <TableHead className="w-[100px]">Game</TableHead>
-            <TableHead>Winner</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="w-[100px] text-secondary">Game</TableHead>
+            <TableHead className="text-secondary">Winner</TableHead>
+            <TableHead className="text-secondary">Date</TableHead>
+            <TableHead className="text-right text-secondary">Amount</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {mockGameHistory.map((data) => (
             <TableRow key={data.date}>
-              <TableCell className="py-4 font-bold">{data.gameName}</TableCell>
-              <TableCell className="capitalize">
+              <TableCell className="py-4 font-bold text-secondary">
+                {data.gameName}
+              </TableCell>
+              <TableCell className="capitalize text-secondary">
                 {data.winnerUsername}
               </TableCell>
-              <TableCell>{formatDate(data.date)}</TableCell>
-              <TableCell className="text-right">{data.winnerAmount}</TableCell>
+              <TableCell className="text-secondary">
+                {formatDate(data.date)}
+              </TableCell>
+              <TableCell className="text-right text-secondary">
+                {data.winnerAmount}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

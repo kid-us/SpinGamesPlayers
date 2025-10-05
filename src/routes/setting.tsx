@@ -14,12 +14,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { apiKey, token } from "@/services/api";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import ChangePassword from "@/components/ChangePassword";
 import { useAuthStore } from "@/stores/authStore";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 // Route
 export const Route = createFileRoute("/setting")({
@@ -55,6 +56,9 @@ type RegisterValues = z.infer<typeof registerSchema>;
 
 function SettingPage() {
   const { user } = useAuthStore();
+  const [title, _setTitle] = useState("Setting - LiveJam");
+
+  useDocumentTitle(title);
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -155,7 +159,7 @@ function SettingPage() {
       <Toaster />
 
       <BreadCrumb route="Setting" />
-      <p className="text-xl mb-5 font-semibold">Setting</p>
+      <p className="text-xl mb-5 font-semibold text-secondary">Setting</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

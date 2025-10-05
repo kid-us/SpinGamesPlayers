@@ -11,16 +11,18 @@ function RootComponent() {
   const location = useLocation();
 
   return (
-    <div
-      className={`${
-        location.pathname === "/login" || location.pathname === "/register"
-          ? "px-5"
-          : "px-8"
-      } `}
-    >
+    <div>
       <Navbar />
-      <Outlet />
-      <Toaster />
+      <div
+        className={`${
+          location.pathname === "/login" || location.pathname === "/register"
+            ? "px-5"
+            : "px-5"
+        } pb-5 mt-8`}
+      >
+        <Outlet />
+        <Toaster />
+      </div>
     </div>
   );
 }

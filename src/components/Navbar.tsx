@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`max-w-lg mx-auto flex items-center justify-between py-3 border-b border-zinc-200 ${
+      className={`max-w-lg mx-auto flex items-center justify-between ${
         location.pathname === "/login" ||
         location.pathname === "/register" ||
         location.pathname === "/otp" ||
@@ -18,17 +18,21 @@ const Navbar = () => {
           : ""
       }`}
     >
-      <Link to="/" className="flex items-center justify-start space-x-5">
-        <LoaderPinwheel size={40} />
-        <p className="text-2xl font-bold">Spin Games</p>
-      </Link>
+      <div className="bg-foreground w-full">
+        <div className="flex items-center justify-between py-3 border-b border-zinc-800 text-secondary px-4">
+          <Link to="/" className="flex items-center justify-start space-x-2">
+            <LoaderPinwheel size={35} />
+            <p className="text-xl font-bold">LiveJamGames</p>
+          </Link>
 
-      <div className="flex items-center space-x-8">
-        <div className="md:flex hidden items-center space-x-2 font-bold">
-          <User size={20} />
-          <p>{user?.display_name}</p>
+          <div className="flex items-center space-x-8">
+            <div className="md:flex hidden items-center space-x-2 font-bold">
+              <User size={20} />
+              <p>{user?.display_name}</p>
+            </div>
+            <LogOut onClick={logout} className="cursor-pointer" size={20} />
+          </div>
         </div>
-        <LogOut onClick={logout} className="cursor-pointer" size={20} />
       </div>
     </div>
   );

@@ -16,13 +16,13 @@ const BreadCrumb = ({ route }: Props) => {
     <Breadcrumb className="mb-5">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink className="text-blue-500" href="/">
+          <BreadcrumbLink className="text-primary" href="/">
             Home
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>{route}</BreadcrumbPage>
+          <BreadcrumbPage className="text-secondary/50">{route}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

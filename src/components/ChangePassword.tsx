@@ -91,7 +91,9 @@ const ChangePassword = () => {
     <>
       <Toaster />
       <div className={`mt-10`}>
-        <p className="text-xl mb-5 font-semibold">Create your new password</p>
+        <p className="text-xl mb-5 font-semibold text-secondary">
+          Create your new password
+        </p>
 
         <Form {...form}>
           <form

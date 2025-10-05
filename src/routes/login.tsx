@@ -25,6 +25,7 @@ import axios from "axios";
 import { apiKey } from "@/services/api";
 import { toast, Toaster } from "sonner";
 import { useAuthStore } from "@/stores/authStore";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 const loginSchema = z.object({
   phone: z
@@ -40,6 +41,9 @@ function Login() {
   const { setToken } = useAuthStore();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [title, _setTitle] = useState("Login - LiveJam");
+
+  useDocumentTitle(title);
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -93,18 +97,18 @@ function Login() {
       {/* Return back to Home */}
       <Link
         to="/"
-        className="absolute top-5 left-5 flex items-center space-x-1"
+        className="absolute top-5 left-5 flex items-center space-x-1 text-primary"
       >
         <House size={20} />
         <p>Home</p>
       </Link>
 
       <div className={`md:max-w-sm md:w-[95%] md:p-8 p-5 rounded-lg border`}>
-        <h2 className="text-2xl text-center font-semibold">
-          Sign in to Spin Games
+        <h2 className="text-2xl text-center font-semibold text-secondary">
+          Sign in to LiveJamGames
         </h2>
         <div className="flex justify-center">
-          <p className="w-54 mb-8 text-zinc-500 text-xs text-center mt-3">
+          <p className="w-54 mb-8 text-zinc-400 text-xs text-center mt-3">
             Craft Your Challenge, Wager Your Skill, and Rise to Riches in Every
             Game!
           </p>
@@ -165,7 +169,7 @@ function Login() {
             <div className="flex justify-end">
               <Link
                 to="/forgot-password"
-                className="text-xs text-blue-600 underline "
+                className="text-xs text-blue-400 underline "
               >
                 Forgot password?
               </Link>
@@ -182,9 +186,9 @@ function Login() {
           </form>
         </Form>
 
-        <p className="mt-4 text-zinc-500 text-xs">
+        <p className="mt-4 text-zinc-400 text-xs">
           Don't have an account?{" "}
-          <Link to={"/register"} className={`text-blue-500 underline text-sm`}>
+          <Link to={"/register"} className={`text-blue-400 underline text-sm`}>
             Register here
           </Link>
         </p>

@@ -35,14 +35,14 @@ function HomePage() {
   const { user } = useAuthStore();
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col mt-10 md:px-2">
+    <div className="max-w-lg mx-auto flex flex-col text-secondary md:px-2">
       <p className="text-lg">
         Welcome back{" "}
-        <span className="text-sky-500 font-bold text-xl">
+        <span className="text-primary font-bold text-xl">
           {user?.display_name}
         </span>{" "}
         Your current balance is{" "}
-        <span className="text-sky-500 font-bold text-2xl">
+        <span className="text-primary font-bold text-2xl">
           {user?.wallet.toLocaleString()}
         </span>{" "}
         ETB
@@ -53,7 +53,7 @@ function HomePage() {
           <Link
             key={route.id}
             to={route.path}
-            className="capitalize bg-primary rounded text-white text-center py-3 hover:bg-primary/80 transition"
+            className="capitalize bg-primary rounded text-black font-semibold text-sm text-center py-3 hover:bg-primary/80 transition"
           >
             {route.path.replace("-", " ").replace("/", "")}
           </Link>

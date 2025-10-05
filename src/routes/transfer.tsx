@@ -19,6 +19,8 @@ import { apiKey, token } from "@/services/api";
 import { toast, Toaster } from "sonner";
 import BreadCrumb from "@/components/BreadCrumb";
 import { useAuthStore } from "@/stores/authStore";
+import { useState } from "react";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 // Route
 export const Route = createFileRoute("/transfer")({
@@ -45,6 +47,10 @@ const transferSchema = z.object({
 type TransferValues = z.infer<typeof transferSchema>;
 
 function TransferPage() {
+  const [title, _setTitle] = useState("Transfer Money - LiveJam");
+
+  useDocumentTitle(title);
+
   const form = useForm<TransferValues>({
     resolver: zodResolver(transferSchema),
     defaultValues: {
@@ -90,11 +96,13 @@ function TransferPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto flex flex-col mt-10">
+    <div className="max-w-lg mx-auto flex flex-col">
       <Toaster />
       <BreadCrumb route="Transfer" />
 
-      <p className="text-xl mb-5 font-semibold">Transfer Money</p>
+      <p className="text-xl mb-5 font-semibold text-secondary">
+        Transfer Money
+      </p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
